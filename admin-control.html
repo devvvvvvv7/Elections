@@ -26,6 +26,13 @@
         .login-btn:hover {
             background: linear-gradient(to right, #f97316, #dc2626);
         }
+        .reset-btn {
+            background: linear-gradient(to right, #6b7280, #9ca3af);
+            transition: background 0.3s;
+        }
+        .reset-btn:hover {
+            background: linear-gradient(to right, #9ca3af, #6b7280);
+        }
     </style>
 </head>
 <body class="min-h-screen flex items-center justify-center p-4">
@@ -46,7 +53,8 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { getFirestore, collection, getDocs, deleteDoc, query } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyBmkgfSOSwTfkEnAxsxQ7bE2bGpYryEkGw",
@@ -60,26 +68,57 @@
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
+        const db = getFirestore(app);
 
         document.getElementById('adminLoginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const username = document.getElementById('adminUsername').value.trim();
             const password = document.getElementById('adminPassword').value;
 
-            // Determine if username is already an email or construct it
             let email = username;
             if (!username.includes('@')) {
-                email = `${username}@sanmati-election.com`; // Append domain for simple usernames
+                email = `${username}@sanmati-election.com`;
             }
             console.log('Attempting login with email:', email);
 
             try {
                 await signInWithEmailAndPassword(auth, email, password);
                 console.log('Login successful');
-                window.location.href = 'results.html';
+                window.location.href = 'results.html'; // Redirect to results page
             } catch (error) {
                 console.error('Login error:', error.code, error.message);
                 alert('Login failed: ' + error.message);
+            }
+        });
+
+        // Add reset button functionality after login
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                const loginContainer = document.querySelector('.login-container');
+                if (loginContainer) {
+                    const resetButton = document.createElement('button');
+                    resetButton.textContent = 'Reset Votes';
+                    resetButton.className = 'reset-btn w-full py-3 text-white font-semibold rounded-md text-lg mt-4';
+                    resetButton.addEventListener('click', async () => {
+                        if (confirm('Are you sure you want to reset all votes? This action cannot be undone.')) {
+                            try {
+                                const votesQuery = query(collection(db, 'votes'));
+                                const snapshot = await getDocs(votesQuery);
+                                snapshot.forEach(async (doc) => {
+                                    await deleteDoc(doc.ref);
+                                });
+                                console.log('All votes have been reset');
+                                alert('All votes have been successfully reset.');
+                                // Optionally refresh the page or redirect
+                                window.location.reload();
+                            } catch (error) {
+                                console.error('Reset error:', error.code, error.message);
+                                alert('Failed to reset votes: ' + error.message);
+                            }
+                        }
+                    });
+                    loginContainer.appendChild(resetButton);
+                }
             }
         });
     </script>

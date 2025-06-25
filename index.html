@@ -61,69 +61,48 @@
     </section>
     <footer class="mt-12 text-center text-white">© 2025 Sanmati School. All rights reserved.</footer>
 
-    <script type="module">
-        import { initializeApp, deleteApp, getApps } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getFirestore, collection, doc, setDoc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+   <script type="module">
+    // ... (previous imports and initialization)
+    document.getElementById('voteForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const name = document.getElementById('name').value;
+        const classVal = document.getElementById('class').value;
+        const section = document.getElementById('section').value;
+        const scholarNo = document.getElementById('scholarNo').value;
+        const candidate = document.getElementById('candidate').value;
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyBmkgfSOSwTfkEnAxsxQ7bE2bGpYryEkGw",
-            authDomain: "school-voting-3bdf6.firebaseapp.com",
-            projectId: "school-voting-3bdf6",
-            storageBucket: "school-voting-3bdf6.firebasestorage.app",
-            messagingSenderId: "301663905943",
-            appId: "1:301663905943:web:36e0bbe51a4d55968561d2",
-            measurementId: "G-4B523LL5S4"
-        };
-
-        let app;
-        const existingApps = getApps();
-        if (existingApps.length) {
-            existingApps.forEach(a => a.delete());
+        if (!classVal || !section) {
+            alert('Please select both class and section.');
+            return;
         }
-        app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
 
-        document.getElementById('voteForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const name = document.getElementById('name').value;
-            const classVal = document.getElementById('class').value;
-            const section = document.getElementById('section').value;
-            const scholarNo = document.getElementById('scholarNo').value;
-            const candidate = document.getElementById('candidate').value;
+        const classSection = `${classVal}${section}`; // e.g., "7thA"
 
-            if (!classVal || !section) {
-                alert('Please select both class and section.');
-                return;
-            }
-
-            const classSection = `${classVal}${section}`; // e.g., "6thA"
-
-            try {
-                console.log('Checking vote for scholarNo:', scholarNo, 'in class/section:', classSection);
-                const voteQuery = query(collection(db, `classes/${classSection}/votes`), where('scholarNo', '==', scholarNo));
-                const voteSnapshot = await getDocs(voteQuery);
-                if (!voteSnapshot.empty) {
-                    alert('You have already voted!');
-                    return;
-                }
-
-                console.log('Attempting to save vote for scholarNo:', scholarNo, 'with data:', { name, section, candidate });
-                const voteRef = doc(db, `classes/${classSection}/votes`, scholarNo);
-                await setDoc(voteRef, {
-                    name,
-                    section,
-                    scholarNo,
-                    candidate,
-                    timestamp: new Date()
-                }, { merge: true });
-                console.log('Vote saved successfully for scholarNo:', scholarNo);
-                alert(`Thank you, ${name}! Your vote for ${candidate} has been recorded.`);
-                document.getElementById('voteForm').reset();
-            } catch (error) {
-                console.error('Vote submission error:', error.code, error.message, error.details, error.stack);
-                alert('Error submitting vote: ' + error.message);
-            }
-        });
-    </script>
+        try {
+117:             console.log('Checking vote for scholarNo:', scholarNo, 'in class/section:', classSection);
+118:             const voteQuery = query(collection(db, `classes/${classSection}/votes`), where('scholarNo', '==', scholarNo));
+119:             const voteSnapshot = await getDocs(voteQuery);
+120:             if (!voteSnapshot.empty) {
+121:                 alert('You have already voted!');
+122:                 return;
+123:             }
+124:             console.log('Attempting to save vote for scholarNo:', scholarNo, 'with data:', { name, section, candidate });
+125:             const voteRef = doc(db, `classes/${classSection}/votes`, scholarNo);
+126:             await setDoc(voteRef, {
+127:                 name,
+128:                 section,
+129:                 scholarNo,
+130:                 candidate,
+131:                 timestamp: new Date()
+132:             }, { merge: true });
+133:             console.log('Vote saved successfully for scholarNo:', scholarNo);
+134:             alert(`Thank you, ${name}! Your vote for ${candidate} has been recorded.`);
+135:             document.getElementById('voteForm').reset();
+        } catch (error) {
+137:             console.error('Vote submission error:', error.code, error.message, error.details, error.stack);
+138:             alert('Error submitting vote: ' + error.message);
+        }
+    });
+</script>
 </body>
 </html>

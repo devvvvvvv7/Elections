@@ -33,8 +33,8 @@
         <h2 class="text-3xl font-bold text-center text-gray-800 mb-6">Admin Login</h2>
         <form id="adminLoginForm" class="space-y-4">
             <div>
-                <label for="adminUsername" class="block text-gray-700 font-medium">Username</label>
-                <input type="text" id="adminUsername" required class="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <label for="adminUsername" class="block text-gray-700 font-medium">Username or Email</label>
+                <input type="text" id="adminUsername" required class="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter username or email">
             </div>
             <div>
                 <label for="adminPassword" class="block text-gray-700 font-medium">Password</label>
@@ -44,47 +44,44 @@
         </form>
     </div>
 
-   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-    const firebaseConfig = {
-        apiKey: "AIzaSyBmkgfSOSwTfkEnAxsxQ7bE2bGpYryEkGw",
-        authDomain: "school-voting-3bdf6.firebaseapp.com",
-        projectId: "school-voting-3bdf6",
-        storageBucket: "school-voting-3bdf6.firebasestorage.app",
-        messagingSenderId: "301663905943",
-        appId: "1:301663905943:web:36e0bbe51a4d55968561d2",
-        measurementId: "G-4B523LL5S4"
-    };
+        const firebaseConfig = {
+            apiKey: "AIzaSyBmkgfSOSwTfkEnAxsxQ7bE2bGpYryEkGw",
+            authDomain: "school-voting-3bdf6.firebaseapp.com",
+            projectId: "school-voting-3bdf6",
+            storageBucket: "school-voting-3bdf6.firebasestorage.app",
+            messagingSenderId: "301663905943",
+            appId: "1:301663905943:web:36e0bbe51a4d55968561d2",
+            measurementId: "G-4B523LL5S4"
+        };
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
 
-    document.getElementById('adminLoginForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const username = document.getElementById('adminUsername').value;
-        const password = document.getElementById('adminPassword').value;
+        document.getElementById('adminLoginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('adminUsername').value.trim();
+            const password = document.getElementById('adminPassword').value;
 
-        // Validate and construct email
-        let email;
-        if (username.includes('@')) {
-            email = username; // Use as-is if it’s already an email
-            console.log('Using provided email:', email);
-        } else {
-            email = `${username}@sanmati-election.com`; // Append domain for simple usernames
-            console.log('Constructed email:', email);
-        }
+            // Determine if username is already an email or construct it
+            let email = username;
+            if (!username.includes('@')) {
+                email = `${username}@sanmati-election.com`; // Append domain for simple usernames
+            }
+            console.log('Attempting login with email:', email);
 
-        try {
-            await signInWithEmailAndPassword(auth, email, password);
-            console.log('Login successful');
-            window.location.href = 'results.html';
-        } catch (error) {
-            console.error('Login error:', error.code, error.message);
-            alert('Login failed: ' + error.message);
-        }
-    });
-</script>
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                console.log('Login successful');
+                window.location.href = 'results.html';
+            } catch (error) {
+                console.error('Login error:', error.code, error.message);
+                alert('Login failed: ' + error.message);
+            }
+        });
+    </script>
 </body>
 </html>

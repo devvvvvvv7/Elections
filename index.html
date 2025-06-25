@@ -7,32 +7,13 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #4b5563, #2563eb);
-            color: #1f2937;
-        }
-        .slogan {
-            animation: slideIn 2s ease-in-out infinite alternate;
-        }
-        @keyframes slideIn {
-            from { transform: translateX(-15px); }
-            to { transform: translateX(15px); }
-        }
-        .candidate-card {
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        .candidate-card:hover {
-            transform: scale(1.05);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-        }
-        .vote-btn {
-            background: linear-gradient(to right, #dc2626, #f97316);
-            transition: background 0.3s;
-        }
-        .vote-btn:hover {
-            background: linear-gradient(to right, #f97316, #dc2626);
-        }
+        body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #4b5563, #2563eb); color: #1f2937; }
+        .slogan { animation: slideIn 2s ease-in-out infinite alternate; }
+        @keyframes slideIn { from { transform: translateX(-15px); } to { transform: translateX(15px); } }
+        .candidate-card { transition: transform 0.3s, box-shadow 0.3s; }
+        .candidate-card:hover { transform: scale(1.05); box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); }
+        .vote-btn { background: linear-gradient(to right, #dc2626, #f97316); transition: background 0.3s; }
+        .vote-btn:hover { background: linear-gradient(to right, #f97316, #dc2626); }
     </style>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-center p-4">
@@ -40,64 +21,31 @@
         <h1 class="text-5xl font-extrabold text-white animate-pulse">Sanmati School Election 2025</h1>
         <p class="text-2xl text-yellow-300 mt-4 slogan">Shape Tomorrow, Vote Today!</p>
     </header>
-
-    <section class="w-full max-w-6xl">
-        <h2 class="text-3xl font-bold text-center text-white mb-8">Meet Our Candidates</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div class="candidate-card bg-white rounded-lg shadow-lg p-6 text-center">
-                <div class="w-24 h-24 mx-auto bg-gray-300 rounded-full mb-4 animate-bounce"></div>
-                <h3 class="text-xl font-semibold">Aarav Sharma</h3>
-                <p class="text-gray-600">Class 12-A</p>
-                <p class="text-blue-500 font-medium mt-2">"Lead with Courage, Serve with Heart!"</p>
-            </div>
-            <div class="candidate-card bg-white rounded-lg shadow-lg p-6 text-center">
-                <div class="w-24 h-24 mx-auto bg-gray-300 rounded-full mb-4 animate-bounce"></div>
-                <h3 class="text-xl font-semibold">Sanya Gupta</h3>
-                <p class="text-gray-600">Class 11-B</p>
-                <p class="text-blue-500 font-medium mt-2">"Together We Rise, Together We Shine!"</p>
-            </div>
-            <div class="candidate-card bg-white rounded-lg shadow-lg p-6 text-center">
-                <div class="w-24 h-24 mx-auto bg-gray-300 rounded-full mb-4 animate-bounce"></div>
-                <h3 class="text-xl font-semibold">Rohan Patel</h3>
-                <p class="text-gray-600">Class 12-C</p>
-                <p class="text-blue-500 font-medium mt-2">"Action Speaks Louder Than Words!"</p>
-            </div>
-            <div class="candidate-card bg-white rounded-lg shadow-lg p-6 text-center">
-                <div class="w-24 h-24 mx-auto bg-gray-300 rounded-full mb-4 animate-bounce"></div>
-                <h3 class="text-xl font-semibold">Neha Singh</h3>
-                <p class="text-gray-600">Class 11-A</p>
-                <p class="text-blue-500 font-medium mt-2">"Empower, Inspire, Achieve!"</p>
-            </div>
-            <div class="candidate-card bg-white rounded-lg shadow-lg p-6 text-center">
-                <div class="w-24 h-24 mx-auto bg-gray-300 rounded-full mb-4 animate-bounce"></div>
-                <h3 class="text-xl font-semibold">Vikram Rao</h3>
-                <p class="text-gray-600">Class 12-B</p>
-                <p class="text-blue-500 font-medium mt-2">"Unity in Diversity!"</p>
-            </div>
-        </div>
-    </section>
-
     <section class="w-full max-w-lg mt-12 bg-white rounded-lg shadow-lg p-8">
         <h2 class="text-3xl font-bold text-center text-gray-800 mb-6">Cast Your Vote</h2>
         <form id="voteForm" class="space-y-4">
-            <div>
-                <label for="name" class="block text-gray-700 font-medium">Full Name</label>
-                <input type="text" id="name" required class="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <div><label for="name" class="block text-gray-700 font-medium">Full Name</label><input type="text" id="name" required class="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></div>
+            <div><label for="class" class="block text-gray-700 font-medium">Class</label>
+                <select id="class" required class="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="">--Choose Class--</option>
+                    <option value="6th">6th</option>
+                    <option value="7th">7th</option>
+                    <option value="8th">8th</option>
+                    <option value="9th">9th</option>
+                    <option value="10th">10th</option>
+                </select>
             </div>
-            <div>
-                <label for="class" class="block text-gray-700 font-medium">Class</label>
-                <input type="text" id="class" required class="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <div><label for="section" class="block text-gray-700 font-medium">Section</label>
+                <select id="section" required class="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="">--Choose Section--</option>
+                    <option value="A">A</option>
+                    <option value="B">B</option>
+                    <option value="C">C</option>
+                    <option value="D">D</option>
+                </select>
             </div>
-            <div>
-                <label for="section" class="block text-gray-700 font-medium">Section</label>
-                <input type="text" id="section" required class="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-            </div>
-            <div>
-                <label for="scholarNo" class="block text-gray-700 font-medium">Scholar Number</label>
-                <input type="text" id="scholarNo" required class="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-            </div>
-            <div>
-                <label for="candidate" class="block text-gray-700 font-medium">Select Candidate</label>
+            <div><label for="scholarNo" class="block text-gray-700 font-medium">Scholar Number</label><input type="text" id="scholarNo" required class="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></div>
+            <div><label for="candidate" class="block text-gray-700 font-medium">Select Candidate</label>
                 <select id="candidate" required class="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                     <option value="">--Choose a Candidate--</option>
                     <option value="Aarav Sharma">Aarav Sharma</option>
@@ -111,10 +59,7 @@
         </form>
         <a href="admin-control.html" class="block text-center mt-4 text-blue-500 hover:underline">View Election Results</a>
     </section>
-
-    <footer class="mt-12 text-center text-white">
-        <p>© 2025 Sanmati School. All rights reserved.</p>
-    </footer>
+    <footer class="mt-12 text-center text-white">© 2025 Sanmati School. All rights reserved.</footer>
 
     <script type="module">
         import { initializeApp, deleteApp, getApps } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -133,12 +78,9 @@
         let app;
         const existingApps = getApps();
         if (existingApps.length) {
-            console.log('Existing apps found:', existingApps.map(a => a.name));
-            existingApps.forEach(a => a.delete().then(() => console.log('Deleted app:', a.name)));
+            existingApps.forEach(a => a.delete());
         }
-        app = initializeApp(firebaseConfig, 'myUniqueApp');
-        console.log('Initialized app:', app.name, 'with projectId:', app.options.projectId);
-
+        app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
         document.getElementById('voteForm').addEventListener('submit', async (e) => {
@@ -149,21 +91,26 @@
             const scholarNo = document.getElementById('scholarNo').value;
             const candidate = document.getElementById('candidate').value;
 
+            if (!classVal || !section) {
+                alert('Please select both class and section.');
+                return;
+            }
+
+            const classSection = `${classVal}${section}`; // e.g., "6thA"
+
             try {
-                console.log('Starting vote check for scholarNo:', scholarNo);
-                const voteQuery = query(collection(db, 'votes'), where('scholarNo', '==', scholarNo));
+                console.log('Checking vote for scholarNo:', scholarNo, 'in class/section:', classSection);
+                const voteQuery = query(collection(db, `classes/${classSection}/votes`), where('scholarNo', '==', scholarNo));
                 const voteSnapshot = await getDocs(voteQuery);
-                console.log('Query executed, found:', voteSnapshot.size, 'documents');
                 if (!voteSnapshot.empty) {
                     alert('You have already voted!');
                     return;
                 }
 
-                console.log('Attempting to save vote for scholarNo:', scholarNo, 'with data:', { name, class: classVal, section, candidate });
-                const voteRef = doc(db, 'votes', scholarNo);
+                console.log('Attempting to save vote for scholarNo:', scholarNo, 'with data:', { name, section, candidate });
+                const voteRef = doc(db, `classes/${classSection}/votes`, scholarNo);
                 await setDoc(voteRef, {
                     name,
-                    class: classVal,
                     section,
                     scholarNo,
                     candidate,
@@ -173,7 +120,7 @@
                 alert(`Thank you, ${name}! Your vote for ${candidate} has been recorded.`);
                 document.getElementById('voteForm').reset();
             } catch (error) {
-                console.error('Vote submission error at line 165:', error.code, error.message, error.stack);
+                console.error('Vote submission error:', error.code, error.message, error.details, error.stack);
                 alert('Error submitting vote: ' + error.message);
             }
         });

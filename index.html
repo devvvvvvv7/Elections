@@ -120,15 +120,15 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getFirestore, collection, doc, setDoc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-      const firebaseConfig = {
-  apiKey: "AIzaSyBmkgfSOSwTfkEnAxsxQ7bE2bGpYryEkGw",
-  authDomain: "school-voting-3bdf6.firebaseapp.com",
-  projectId: "school-voting-3bdf6",
-  storageBucket: "school-voting-3bdf6.firebasestorage.app",
-  messagingSenderId: "301663905943",
-  appId: "1:301663905943:web:36e0bbe51a4d55968561d2",
-  measurementId: "G-4B523LL5S4"
-};
+        const firebaseConfig = {
+            apiKey: "AIzaSyBmkgfSOSwTfkEnAxsxQ7bE2bGpYryEkGw",
+            authDomain: "school-voting-3bdf6.firebaseapp.com",
+            projectId: "school-voting-3bdf6",
+            storageBucket: "school-voting-3bdf6.firebasestorage.app",
+            messagingSenderId: "301663905943",
+            appId: "1:301663905943:web:36e0bbe51a4d55968561d2",
+            measurementId: "G-4B523LL5S4"
+        };
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
@@ -142,6 +142,7 @@
             const candidate = document.getElementById('candidate').value;
 
             try {
+                console.log('Attempting to check existing vote for scholarNo:', scholarNo);
                 const voteQuery = query(collection(db, 'votes'), where('scholarNo', '==', scholarNo));
                 const voteSnapshot = await getDocs(voteQuery);
                 if (!voteSnapshot.empty) {
@@ -149,6 +150,7 @@
                     return;
                 }
 
+                console.log('Attempting to save vote for scholarNo:', scholarNo);
                 await setDoc(doc(db, 'votes', scholarNo), {
                     name,
                     class: classVal,
@@ -160,6 +162,7 @@
                 alert(`Thank you, ${name}! Your vote for ${candidate} has been recorded.`);
                 document.getElementById('voteForm').reset();
             } catch (error) {
+                console.error('Vote submission error:', error.code, error.message);
                 alert('Error submitting vote: ' + error.message);
             }
         });

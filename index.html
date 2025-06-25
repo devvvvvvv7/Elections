@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sanmati School Election 2025</title>
+    <title>Sanmati School Election 2025 - Admin Login</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
@@ -12,171 +12,76 @@
             background: linear-gradient(135deg, #4b5563, #2563eb);
             color: #1f2937;
         }
-        .slogan {
-            animation: slideIn 2s ease-in-out infinite alternate;
+        .login-container {
+            animation: fadeIn 1s ease-in;
         }
-        @keyframes slideIn {
-            from { transform: translateX(-15px); }
-            to { transform: translateX(15px); }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        .candidate-card {
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        .candidate-card:hover {
-            transform: scale(1.05);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-        }
-        .vote-btn {
+        .login-btn {
             background: linear-gradient(to right, #dc2626, #f97316);
             transition: background 0.3s;
         }
-        .vote-btn:hover {
+        .login-btn:hover {
             background: linear-gradient(to right, #f97316, #dc2626);
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col items-center justify-center p-4">
-    <header class="text-center mb-12">
-        <h1 class="text-5xl font-extrabold text-white animate-pulse">Sanmati School Election 2025</h1>
-        <p class="text-2xl text-yellow-300 mt-4 slogan">Shape Tomorrow, Vote Today!</p>
-    </header>
-
-    <section class="w-full max-w-6xl">
-        <h2 class="text-3xl font-bold text-center text-white mb-8">Meet Our Candidates</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div class="candidate-card bg-white rounded-lg shadow-lg p-6 text-center">
-                <div class="w-24 h-24 mx-auto bg-gray-300 rounded-full mb-4 animate-bounce"></div>
-                <h3 class="text-xl font-semibold">Aarav Sharma</h3>
-                <p class="text-gray-600">Class 12-A</p>
-                <p class="text-blue-500 font-medium mt-2">"Lead with Courage, Serve with Heart!"</p>
-            </div>
-            <div class="candidate-card bg-white rounded-lg shadow-lg p-6 text-center">
-                <div class="w-24 h-24 mx-auto bg-gray-300 rounded-full mb-4 animate-bounce"></div>
-                <h3 class="text-xl font-semibold">Sanya Gupta</h3>
-                <p class="text-gray-600">Class 11-B</p>
-                <p class="text-blue-500 font-medium mt-2">"Together We Rise, Together We Shine!"</p>
-            </div>
-            <div class="candidate-card bg-white rounded-lg shadow-lg p-6 text-center">
-                <div class="w-24 h-24 mx-auto bg-gray-300 rounded-full mb-4 animate-bounce"></div>
-                <h3 class="text-xl font-semibold">Rohan Patel</h3>
-                <p class="text-gray-600">Class 12-C</p>
-                <p class="text-blue-500 font-medium mt-2">"Action Speaks Louder Than Words!"</p>
-            </div>
-            <div class="candidate-card bg-white rounded-lg shadow-lg p-6 text-center">
-                <div class="w-24 h-24 mx-auto bg-gray-300 rounded-full mb-4 animate-bounce"></div>
-                <h3 class="text-xl font-semibold">Neha Singh</h3>
-                <p class="text-gray-600">Class 11-A</p>
-                <p class="text-blue-500 font-medium mt-2">"Empower, Inspire, Achieve!"</p>
-            </div>
-            <div class="candidate-card bg-white rounded-lg shadow-lg p-6 text-center">
-                <div class="w-24 h-24 mx-auto bg-gray-300 rounded-full mb-4 animate-bounce"></div>
-                <h3 class="text-xl font-semibold">Vikram Rao</h3>
-                <p class="text-gray-600">Class 12-B</p>
-                <p class="text-blue-500 font-medium mt-2">"Unity in Diversity!"</p>
-            </div>
-        </div>
-    </section>
-
-    <section class="w-full max-w-lg mt-12 bg-white rounded-lg shadow-lg p-8">
-        <h2 class="text-3xl font-bold text-center text-gray-800 mb-6">Cast Your Vote</h2>
-        <form id="voteForm" class="space-y-4">
+<body class="min-h-screen flex items-center justify-center p-4">
+    <div class="login-container w-full max-w-md bg-white rounded-lg shadow-lg p-8">
+        <h2 class="text-3xl font-bold text-center text-gray-800 mb-6">Admin Login</h2>
+        <form id="adminLoginForm" class="space-y-4">
             <div>
-                <label for="name" class="block text-gray-700 font-medium">Full Name</label>
-                <input type="text" id="name" required class="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <label for="adminUsername" class="block text-gray-700 font-medium">Username or Email</label>
+                <input type="text" id="adminUsername" required class="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter username or email">
             </div>
             <div>
-                <label for="class" class="block text-gray-700 font-medium">Class</label>
-                <input type="text" id="class" required class="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <label for="adminPassword" class="block text-gray-700 font-medium">Password</label>
+                <input type="password" id="adminPassword" required class="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
             </div>
-            <div>
-                <label for="section" class="block text-gray-700 font-medium">Section</label>
-                <input type="text" id="section" required class="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-            </div>
-            <div>
-                <label for="scholarNo" class="block text-gray-700 font-medium">Scholar Number</label>
-                <input type="text" id="scholarNo" required class="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-            </div>
-            <div>
-                <label for="candidate" class="block text-gray-700 font-medium">Select Candidate</label>
-                <select id="candidate" required class="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option value="">--Choose a Candidate--</option>
-                    <option value="Aarav Sharma">Aarav Sharma</option>
-                    <option value="Sanya Gupta">Sanya Gupta</option>
-                    <option value="Rohan Patel">Rohan Patel</option>
-                    <option value="Neha Singh">Neha Singh</option>
-                    <option value="Vikram Rao">Vikram Rao</option>
-                </select>
-            </div>
-            <button type="submit" class="vote-btn w-full py-3 text-white font-semibold rounded-md text-lg">Submit Vote</button>
+            <button type="submit" class="login-btn w-full py-3 text-white font-semibold rounded-md text-lg">Login</button>
         </form>
-        <a href="admin-control.html" class="block text-center mt-4 text-blue-500 hover:underline">View Election Results</a>
-    </section>
-
-    <footer class="mt-12 text-center text-white">
-        <p>© 2025 Sanmati School. All rights reserved.</p>
-    </footer>
+    </div>
 
     <script type="module">
-    import { initializeApp, deleteApp, getApps } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getFirestore, collection, doc, setDoc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-    const firebaseConfig = {
-        apiKey: "AIzaSyBmkgfSOSwTfkEnAxsxQ7bE2bGpYryEkGw",
-        authDomain: "school-voting-3bdf6.firebaseapp.com",
-        projectId: "school-voting-3bdf6",
-        storageBucket: "school-voting-3bdf6.firebasestorage.app",
-        messagingSenderId: "301663905943",
-        appId: "1:301663905943:web:36e0bbe51a4d55968561d2",
-        measurementId: "G-4B523LL5S4"
-    };
+        const firebaseConfig = {
+            apiKey: "AIzaSyBmkgfSOSwTfkEnAxsxQ7bE2bGpYryEkGw",
+            authDomain: "school-voting-3bdf6.firebaseapp.com",
+            projectId: "school-voting-3bdf6",
+            storageBucket: "school-voting-3bdf6.firebasestorage.app",
+            messagingSenderId: "301663905943",
+            appId: "1:301663905943:web:36e0bbe51a4d55968561d2",
+            measurementId: "G-4B523LL5S4"
+        };
 
-    let app;
-    const existingApps = getApps();
-    if (existingApps.length) {
-        console.log('Existing apps found:', existingApps.map(a => a.name));
-        existingApps.forEach(a => a.delete().then(() => console.log('Deleted app:', a.name)));
-    }
-    app = initializeApp(firebaseConfig, 'myUniqueApp');
-    console.log('Initialized app:', app.name, 'with projectId:', app.options.projectId);
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
 
-    const db = getFirestore(app);
+        document.getElementById('adminLoginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('adminUsername').value.trim();
+            const password = document.getElementById('adminPassword').value;
 
-    document.getElementById('voteForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const name = document.getElementById('name').value;
-        const classVal = document.getElementById('class').value;
-        const section = document.getElementById('section').value;
-        const scholarNo = document.getElementById('scholarNo').value;
-        const candidate = document.getElementById('candidate').value;
-
-        try {
-            console.log('Starting vote check for scholarNo:', scholarNo);
-            const voteQuery = query(collection(db, 'votes'), where('scholarNo', '==', scholarNo));
-            const voteSnapshot = await getDocs(voteQuery);
-            console.log('Query executed, found:', voteSnapshot.size, 'documents');
-            if (!voteSnapshot.empty) {
-                alert('You have already voted!');
-                return;
+            // Determine if username is already an email or construct it
+            let email = username;
+            if (!username.includes('@')) {
+                email = `${username}@sanmati-election.com`; // Append domain for simple usernames
             }
+            console.log('Attempting login with email:', email);
 
-            console.log('Attempting to save vote for scholarNo:', scholarNo, 'with data:', { name, class: classVal, section, candidate });
-            const voteRef = doc(db, 'votes', scholarNo);
-            await setDoc(voteRef, {
-                name,
-                class: classVal,
-                section,
-                scholarNo,
-                candidate,
-                timestamp: new Date()
-            }, { merge: true });
-            console.log('Vote saved successfully for scholarNo:', scholarNo);
-            alert(`Thank you, ${name}! Your vote for ${candidate} has been recorded.`);
-            document.getElementById('voteForm').reset();
-        } catch (error) {
-            console.error('Vote submission error at line 165:', error.code, error.message, error.details, error.stack);
-            alert('Error submitting vote: ' + error.message);
-        }
-    });
-</script>
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                console.log('Login successful');
+                window.location.href = 'results.html';
+            } catch (error) {
+                console.error('Login error:', error.code, error.message);
+                alert('Login failed: ' + error.message);
+            }
+        });
+    </script>
 </body>
 </html>

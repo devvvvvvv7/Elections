@@ -117,66 +117,66 @@
     </footer>
 
     <script type="module">
-        import { initializeApp, deleteApp, getApps } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getFirestore, collection, doc, setDoc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { initializeApp, deleteApp, getApps } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, collection, doc, setDoc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyBmkgfSOSwTfkEnAxsxQ7bE2bGpYryEkGw",
-            authDomain: "school-voting-3bdf6.firebaseapp.com",
-            projectId: "school-voting-3bdf6",
-            storageBucket: "school-voting-3bdf6.firebasestorage.app",
-            messagingSenderId: "301663905943",
-            appId: "1:301663905943:web:36e0bbe51a4d55968561d2",
-            measurementId: "G-4B523LL5S4"
-        };
+    const firebaseConfig = {
+        apiKey: "AIzaSyBmkgfSOSwTfkEnAxsxQ7bE2bGpYryEkGw",
+        authDomain: "school-voting-3bdf6.firebaseapp.com",
+        projectId: "school-voting-3bdf6",
+        storageBucket: "school-voting-3bdf6.firebasestorage.app",
+        messagingSenderId: "301663905943",
+        appId: "1:301663905943:web:36e0bbe51a4d55968561d2",
+        measurementId: "G-4B523LL5S4"
+    };
 
-        let app;
-        const existingApps = getApps();
-        if (existingApps.length) {
-            console.log('Existing apps found:', existingApps.map(a => a.name));
-            existingApps.forEach(a => a.delete().then(() => console.log('Deleted app:', a.name)));
-        }
-        app = initializeApp(firebaseConfig, 'myUniqueApp');
-        console.log('Initialized app:', app.name, 'with projectId:', app.options.projectId);
+    let app;
+    const existingApps = getApps();
+    if (existingApps.length) {
+        console.log('Existing apps found:', existingApps.map(a => a.name));
+        existingApps.forEach(a => a.delete().then(() => console.log('Deleted app:', a.name)));
+    }
+    app = initializeApp(firebaseConfig, 'myUniqueApp');
+    console.log('Initialized app:', app.name, 'with projectId:', app.options.projectId);
 
-        const db = getFirestore(app);
+    const db = getFirestore(app);
 
-        document.getElementById('voteForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const name = document.getElementById('name').value;
-            const classVal = document.getElementById('class').value;
-            const section = document.getElementById('section').value;
-            const scholarNo = document.getElementById('scholarNo').value;
-            const candidate = document.getElementById('candidate').value;
+    document.getElementById('voteForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const name = document.getElementById('name').value;
+        const classVal = document.getElementById('class').value;
+        const section = document.getElementById('section').value;
+        const scholarNo = document.getElementById('scholarNo').value;
+        const candidate = document.getElementById('candidate').value;
 
-            try {
-                console.log('Starting vote check for scholarNo:', scholarNo);
-                const voteQuery = query(collection(db, 'votes'), where('scholarNo', '==', scholarNo));
-                const voteSnapshot = await getDocs(voteQuery);
-                console.log('Query executed, found:', voteSnapshot.size, 'documents');
-                if (!voteSnapshot.empty) {
-                    alert('You have already voted!');
-                    return;
-                }
-
-                console.log('Attempting to save vote for scholarNo:', scholarNo, 'with data:', { name, class: classVal, section, candidate });
-                const voteRef = doc(db, 'votes', scholarNo);
-                await setDoc(voteRef, {
-                    name,
-                    class: classVal,
-                    section,
-                    scholarNo,
-                    candidate,
-                    timestamp: new Date()
-                }, { merge: true });
-                console.log('Vote saved successfully for scholarNo:', scholarNo);
-                alert(`Thank you, ${name}! Your vote for ${candidate} has been recorded.`);
-                document.getElementById('voteForm').reset();
-            } catch (error) {
-                console.error('Vote submission error at line 165:', error.code, error.message, error.stack);
-                alert('Error submitting vote: ' + error.message);
+        try {
+            console.log('Starting vote check for scholarNo:', scholarNo);
+            const voteQuery = query(collection(db, 'votes'), where('scholarNo', '==', scholarNo));
+            const voteSnapshot = await getDocs(voteQuery);
+            console.log('Query executed, found:', voteSnapshot.size, 'documents');
+            if (!voteSnapshot.empty) {
+                alert('You have already voted!');
+                return;
             }
-        });
-    </script>
+
+            console.log('Attempting to save vote for scholarNo:', scholarNo, 'with data:', { name, class: classVal, section, candidate });
+            const voteRef = doc(db, 'votes', scholarNo);
+            await setDoc(voteRef, {
+                name,
+                class: classVal,
+                section,
+                scholarNo,
+                candidate,
+                timestamp: new Date()
+            }, { merge: true });
+            console.log('Vote saved successfully for scholarNo:', scholarNo);
+            alert(`Thank you, ${name}! Your vote for ${candidate} has been recorded.`);
+            document.getElementById('voteForm').reset();
+        } catch (error) {
+            console.error('Vote submission error at line 165:', error.code, error.message, error.details, error.stack);
+            alert('Error submitting vote: ' + error.message);
+        }
+    });
+</script>
 </body>
 </html>

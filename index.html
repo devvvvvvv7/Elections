@@ -117,7 +117,7 @@
     </footer>
 
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { initializeApp, deleteApp, getApps } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getFirestore, collection, doc, setDoc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
         const firebaseConfig = {
@@ -130,7 +130,15 @@
             measurementId: "G-4B523LL5S4"
         };
 
-        const app = initializeApp(firebaseConfig);
+        let app;
+        const existingApps = getApps();
+        if (existingApps.length) {
+            console.log('Existing apps found:', existingApps.map(a => a.name));
+            existingApps.forEach(a => a.delete().then(() => console.log('Deleted app:', a.name)));
+        }
+        app = initializeApp(firebaseConfig, 'myUniqueApp');
+        console.log('Initialized app:', app.name, 'with projectId:', app.options.projectId);
+
         const db = getFirestore(app);
 
         document.getElementById('voteForm').addEventListener('submit', async (e) => {
@@ -142,27 +150,30 @@
             const candidate = document.getElementById('candidate').value;
 
             try {
-                console.log('Attempting to check existing vote for scholarNo:', scholarNo);
+                console.log('Starting vote check for scholarNo:', scholarNo);
                 const voteQuery = query(collection(db, 'votes'), where('scholarNo', '==', scholarNo));
                 const voteSnapshot = await getDocs(voteQuery);
+                console.log('Query executed, found:', voteSnapshot.size, 'documents');
                 if (!voteSnapshot.empty) {
                     alert('You have already voted!');
                     return;
                 }
 
-                console.log('Attempting to save vote for scholarNo:', scholarNo);
-                await setDoc(doc(db, 'votes', scholarNo), {
+                console.log('Attempting to save vote for scholarNo:', scholarNo, 'with data:', { name, class: classVal, section, candidate });
+                const voteRef = doc(db, 'votes', scholarNo);
+                await setDoc(voteRef, {
                     name,
                     class: classVal,
                     section,
                     scholarNo,
                     candidate,
                     timestamp: new Date()
-                });
+                }, { merge: true });
+                console.log('Vote saved successfully for scholarNo:', scholarNo);
                 alert(`Thank you, ${name}! Your vote for ${candidate} has been recorded.`);
                 document.getElementById('voteForm').reset();
             } catch (error) {
-                console.error('Vote submission error:', error.code, error.message);
+                console.error('Vote submission error at line 165:', error.code, error.message, error.stack);
                 alert('Error submitting vote: ' + error.message);
             }
         });

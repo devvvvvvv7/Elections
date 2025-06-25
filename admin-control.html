@@ -49,14 +49,14 @@
         import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
         const firebaseConfig = {
-  apiKey: "AIzaSyBmkgfSOSwTfkEnAxsxQ7bE2bGpYryEkGw",
-  authDomain: "school-voting-3bdf6.firebaseapp.com",
-  projectId: "school-voting-3bdf6",
-  storageBucket: "school-voting-3bdf6.firebasestorage.app",
-  messagingSenderId: "301663905943",
-  appId: "1:301663905943:web:36e0bbe51a4d55968561d2",
-  measurementId: "G-4B523LL5S4"
-};
+            apiKey: "AIzaSyBmkgfSOSwTfkEnAxsxQ7bE2bGpYryEkGw",
+            authDomain: "school-voting-3bdf6.firebaseapp.com",
+            projectId: "school-voting-3bdf6",
+            storageBucket: "school-voting-3bdf6.firebasestorage.app",
+            messagingSenderId: "301663905943",
+            appId: "1:301663905943:web:36e0bbe51a4d55968561d2",
+            measurementId: "G-4B523LL5S4"
+        };
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
@@ -68,10 +68,13 @@
 
             try {
                 const email = `${username}@sanmati-election.com`;
+                console.log('Attempting login with email:', email);
                 await signInWithEmailAndPassword(auth, email, password);
+                console.log('Login successful');
                 window.location.href = 'results.html';
             } catch (error) {
-                alert('Login failed: Invalid credentials or network error.');
+                console.error('Login error:', error.code, error.message);
+                alert('Login failed: ' + error.message);
             }
         });
     </script>

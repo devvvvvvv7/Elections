@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sanmati School Election 2025 - Admin Login</title>
+    <title>Sanmati School Election 2025 - Results</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
@@ -12,66 +12,106 @@
             background: linear-gradient(135deg, #4b5563, #2563eb);
             color: #1f2937;
         }
-        .login-container {
-            animation: fadeIn 1s ease-in;
+        .result-card {
+            transition: transform 0.3s, box-shadow 0.3s;
         }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        .result-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
         }
-        .login-btn {
+        .logout-btn {
             background: linear-gradient(to right, #dc2626, #f97316);
             transition: background 0.3s;
         }
-        .login-btn:hover {
+        .logout-btn:hover {
             background: linear-gradient(to right, #f97316, #dc2626);
         }
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-4">
-    <div class="login-container w-full max-w-md bg-white rounded-lg shadow-lg p-8">
-        <h2 class="text-3xl font-bold text-center text-gray-800 mb-6">Admin Login</h2>
-        <form id="adminLoginForm" class="space-y-4">
-            <div>
-                <label for="adminUsername" class="block text-gray-700 font-medium">Username</label>
-                <input type="text" id="adminUsername" required class="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-            </div>
-            <div>
-                <label for="adminPassword" class="block text-gray-700 font-medium">Password</label>
-                <input type="password" id="adminPassword" required class="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-            </div>
-            <button type="submit" class="login-btn w-full py-3 text-white font-semibold rounded-md text-lg">Login</button>
-        </form>
-    </div>
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
+    <header class="text-center mb-12">
+        <h1 class="text-5xl font-extrabold text-white animate-pulse">Election Results 2025</h1>
+        <p class="text-2xl text-yellow-300 mt-4">Sanmati School</p>
+    </header>
+
+    <section id="resultsSection" class="w-full max-w-4xl hidden">
+        <h2 class="text-3xl font-bold text-center text-white mb-8">Vote Count</h2>
+        <div id="resultsContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+        <button id="logoutBtn" class="logout-btn mt-8 py-3 px-6 text-white font-semibold rounded-md">Logout</button>
+    </section>
+
+    <section id="loadingSection" class="text-white text-2xl">Loading results...</section>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
         const firebaseConfig = {
-  apiKey: "AIzaSyBmkgfSOSwTfkEnAxsxQ7bE2bGpYryEkGw",
-  authDomain: "school-voting-3bdf6.firebaseapp.com",
-  projectId: "school-voting-3bdf6",
-  storageBucket: "school-voting-3bdf6.firebasestorage.app",
-  messagingSenderId: "301663905943",
-  appId: "1:301663905943:web:36e0bbe51a4d55968561d2",
-  measurementId: "G-4B523LL5S4"
-};
+            apiKey: "AIzaSyBmkgfSOSwTfkEnAxsxQ7bE2bGpYryEkGw",
+            authDomain: "school-voting-3bdf6.firebaseapp.com",
+            projectId: "school-voting-3bdf6",
+            storageBucket: "school-voting-3bdf6.firebasestorage.app",
+            messagingSenderId: "301663905943",
+            appId: "1:301663905943:web:36e0bbe51a4d55968561d2",
+            measurementId: "G-4B523LL5S4"
+        };
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
+        const db = getFirestore(app);
 
-        document.getElementById('adminLoginForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const username = document.getElementById('adminUsername').value;
-            const password = document.getElementById('adminPassword').value;
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                try {
+                    console.log('Fetching vote data for authenticated user:', user.email);
+                    const votesCollection = collection(db, 'votes');
+                    const voteSnapshot = await getDocs(votesCollection);
+                    const voteCounts = {
+                        'Aarav Sharma': 0,
+                        'Sanya Gupta': 0,
+                        'Rohan Patel': 0,
+                        'Neha Singh': 0,
+                        'Vikram Rao': 0
+                    };
 
+                    voteSnapshot.forEach(doc => {
+                        const candidate = doc.data().candidate;
+                        if (voteCounts[candidate] !== undefined) {
+                            voteCounts[candidate]++;
+                        }
+                    });
+
+                    const resultsContainer = document.getElementById('resultsContainer');
+                    for (const [candidate, count] of Object.entries(voteCounts)) {
+                        const resultCard = document.createElement('div');
+                        resultCard.className = 'result-card bg-white rounded-lg shadow-lg p-6 text-center';
+                        resultCard.innerHTML = `
+                            <h3 class="text-xl font-semibold">${candidate}</h3>
+                            <p class="text-3xl font-bold text-blue-500 mt-2">${count} votes</p>
+                        `;
+                        resultsContainer.appendChild(resultCard);
+                    }
+
+                    document.getElementById('loadingSection').classList.add('hidden');
+                    document.getElementById('resultsSection').classList.remove('hidden');
+                } catch (error) {
+                    console.error('Results loading error:', error.code, error.message);
+                    alert('Error loading results: ' + error.message);
+                    window.location.href = 'admin-control.html';
+                }
+            } else {
+                window.location.href = 'admin-control.html';
+            }
+        });
+
+        document.getElementById('logoutBtn').addEventListener('click', async () => {
             try {
-                const email = `${username}@sanmati-election.com`;
-                await signInWithEmailAndPassword(auth, email, password);
-                window.location.href = 'results.html';
+                await signOut(auth);
+                window.location.href = 'admin-control.html';
             } catch (error) {
-                alert('Login failed: Invalid credentials or network error.');
+                console.error('Logout error:', error.code, error.message);
+                alert('Logout failed: ' + error.message);
             }
         });
     </script>

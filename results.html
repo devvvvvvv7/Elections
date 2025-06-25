@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sanmati School Election 2025 - Admin Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #4b5563, #2563eb);
+            color: #1f2937;
+        }
+        .login-container {
+            animation: fadeIn 1s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .login-btn {
+            background: linear-gradient(to right, #dc2626, #f97316);
+            transition: background 0.3s;
+        }
+        .login-btn:hover {
+            background: linear-gradient(to right, #f97316, #dc2626);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+    <div class="login-container w-full max-w-md bg-white rounded-lg shadow-lg p-8">
+        <h2 class="text-3xl font-bold text-center text-gray-800 mb-6">Admin Login</h2>
+        <form id="adminLoginForm" class="space-y-4">
+            <div>
+                <label for="adminUsername" class="block text-gray-700 font-medium">Username</label>
+                <input type="text" id="adminUsername" required class="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div>
+                <label for="adminPassword" class="block text-gray-700 font-medium">Password</label>
+                <input type="password" id="adminPassword" required class="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <button type="submit" class="login-btn w-full py-3 text-white font-semibold rounded-md text-lg">Login</button>
+        </form>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+        const firebaseConfig = {
+  apiKey: "AIzaSyBmkgfSOSwTfkEnAxsxQ7bE2bGpYryEkGw",
+  authDomain: "school-voting-3bdf6.firebaseapp.com",
+  projectId: "school-voting-3bdf6",
+  storageBucket: "school-voting-3bdf6.firebasestorage.app",
+  messagingSenderId: "301663905943",
+  appId: "1:301663905943:web:36e0bbe51a4d55968561d2",
+  measurementId: "G-4B523LL5S4"
+};
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        document.getElementById('adminLoginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('adminUsername').value;
+            const password = document.getElementById('adminPassword').value;
+
+            try {
+                const email = `${username}@sanmati-election.com`;
+                await signInWithEmailAndPassword(auth, email, password);
+                window.location.href = 'results.html';
+            } catch (error) {
+                alert('Login failed: Invalid credentials or network error.');
+            }
+        });
+    </script>
+</body>
+</html>
